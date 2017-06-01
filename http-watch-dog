@@ -1,0 +1,24 @@
+#!/bin/bash
+
+response=$(curl --write-out %{http_code} --silent --output /dev/null http://google.it/pippero )
+
+echo "Tomcat Servizi Auto Restart - Check website, HTTP Response is: ${response}"
+
+if [ ${response} != "200" ]; then
+      echo "Tomcat Servizi seems down ..."
+      echo "Tomcat Servizi Auto Restart Running..."
+
+      echo "Tomcat Servizi Auto Restart stop service"
+      ## /etc/init.d/tomcat-tinventionServizi stop
+      timeout 50s sleep 60s
+
+      echo "Tomcat Servizi Auto Restart kill process and remove pid..."
+      # pkill -F /var/run/tomcat-tinventionServizi.pid
+
+      timeout 5s sleep 10s
+      echo "Tomcat Servizi Auto Restart, restart service"
+      # /etc/init.d/tomcat-tinventionServizi start
+      
+
+fi
+echo "Tomcat Servizi Auto Restart End"
